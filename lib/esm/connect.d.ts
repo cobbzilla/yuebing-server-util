@@ -12,4 +12,10 @@ export type MobilettoConnectionConfigResolver<T extends Volume_subDriver> = {
     opts: (cfg: T) => Record<string, unknown> | undefined;
 };
 export declare const resolveConnectionConfig: (volume: VolumeType) => MobilettoConnectionConfig;
-export declare const connectVolume: <T extends unknown>(volume: T) => Promise<MobilettoConnection>;
+export type VolumeConnectResult = {
+    name: string;
+    type: string;
+    connection?: MobilettoConnection;
+    error?: Error | unknown;
+};
+export declare const connectVolume: <T extends unknown>(volume: T) => Promise<VolumeConnectResult>;

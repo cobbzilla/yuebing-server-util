@@ -72,27 +72,38 @@ export const resolveConnectionConfig = (volume: VolumeType): MobilettoConnection
 
 const VOLUME_CONNECTIONS: Record<string, MobilettoConnection> = {};
 
-export const connectVolume = async <T extends VolumeType>(volume: T): Promise<MobilettoConnection> => {
+export type VolumeConnectResult = {
+    name: string;
+    type: string;
+    connection?: MobilettoConnection;
+    error?: Error | unknown;
+};
+
+export const connectVolume = async <T extends VolumeType>(volume: T): Promise<VolumeConnectResult> => {
     const vol = volume as VolumeType;
     if (!VOLUME_CONNECTIONS[vol.name]) {
-        const config = resolveConnectionConfig(volume);
-        const encryption: MobilettoEncryptionSettings | undefined = vol.encryptionEnable
-            ? {
-                  key: vol.encryption?.encryptionKey ? vol.encryption?.encryptionKey : "",
-                  iv: vol.encryption?.encryptionIV ? vol.encryption?.encryptionIV : undefined,
-                  algo: vol.encryption?.encryptionAlgo ? vol.encryption?.encryptionAlgo : undefined,
-              }
-            : undefined;
-        const connection = await mobiletto(
-            vol.type,
-            config.key,
-            config.secret,
-            config.opts ? (config.opts as MobilettoOptions) : undefined,
-            encryption
-        );
-        if (!VOLUME_CONNECTIONS[vol.name]) {
-            VOLUME_CONNECTIONS[vol.name] = connection;
+        try {
+            const config = resolveConnectionConfig(volume);
+            const encryption: MobilettoEncryptionSettings | undefined = vol.encryptionEnable
+                ? {
+                      key: vol.encryption?.encryptionKey ? vol.encryption?.encryptionKey : "",
+                      iv: vol.encryption?.encryptionIV ? vol.encryption?.encryptionIV : undefined,
+                      algo: vol.encryption?.encryptionAlgo ? vol.encryption?.encryptionAlgo : undefined,
+                  }
+                : undefined;
+            const connection = await mobiletto(
+                vol.type,
+                config.key,
+                config.secret,
+                config.opts ? (config.opts as MobilettoOptions) : undefined,
+                encryption
+            );
+            if (!VOLUME_CONNECTIONS[vol.name]) {
+                VOLUME_CONNECTIONS[vol.name] = connection;
+            }
+        } catch (e) {
+            return { name: vol.name, type: vol.type, error: e };
         }
     }
-    return VOLUME_CONNECTIONS[vol.name];
+    return { name: vol.name, type: vol.type, connection: VOLUME_CONNECTIONS[vol.name] };
 };
