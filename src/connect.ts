@@ -98,6 +98,7 @@ export const connectVolume = async <T extends VolumeType>(volume: T): Promise<Vo
                 config.opts ? (config.opts as MobilettoOptions) : undefined,
                 encryption
             );
+            connection.name = vol.name;
             if (!VOLUME_CONNECTIONS[vol.name]) {
                 VOLUME_CONNECTIONS[vol.name] = connection;
             }
