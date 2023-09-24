@@ -1,6 +1,6 @@
 {
   "name": "yuebing-server-util",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "description": "Server-side utilities for yuebing",
   "keywords": [
@@ -37,10 +37,10 @@
     "@typescript-eslint/parser": "^6.4.1",
     "eslint": "^8.48.0",
     "eslint-config-prettier": "^8.10.0",
-    "mobiletto-base": "^2.1.1",
+    "mobiletto-base": "^2.1.3",
     "prettier": "^2.8.8",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^5.2.2",
-    "yuebing-model": "^2.7.31"
+    "yuebing-model": "^2.7.68"
   }
 }

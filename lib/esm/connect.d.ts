@@ -1,6 +1,5 @@
-import { MobilettoConnection } from "mobiletto-base/lib/cjs/types.js";
-import { Volume_subDriver } from "yuebing-model";
-import { VolumeType } from "yuebing-model";
+import { MobilettoConnection } from "mobiletto-base";
+import { VolumeType, Volume_subDriver } from "yuebing-model";
 export type MobilettoConnectionConfig = {
     key: string;
     secret?: string;
